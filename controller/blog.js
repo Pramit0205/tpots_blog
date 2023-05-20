@@ -34,10 +34,10 @@ const getBlogsById = async(req, res) => {
         const id = req.params.id;
 
         const blogById = await blogModel.findById(id).lean()
-        if (blogById.userId.toString() !== req.decodedToken.id) {
-            return res.status(401).send({ error: true, message: "you are not authorized to access this data" })
-        }
         if (blogById) {
+            if (blogById.userId.toString() !== req.decodedToken.id) {
+                return res.status(401).send({ error: true, message: "you are not authorized to access this data" })
+            }
             res.status(200).send({ error: false, message: "your blog", data: blogById })
         } else {
             res.status(200).send({ error: false, message: "no blogs found with this id", data: null })
