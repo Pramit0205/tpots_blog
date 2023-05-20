@@ -25,7 +25,7 @@ const createUser = async function(req, res) {
             let encryptPassword = await bcrypt.hash(password, 10)
             data.password = encryptPassword;
             let user = await userModel.create(data)
-            res.status(201).send({ error: false, message: "blog is created", data: user })
+            res.status(201).send({ error: false, message: "user is created", data: user })
         } else {
             res.status(201).send({ error: true, message: "enter all details", data: null })
         }

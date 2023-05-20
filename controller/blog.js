@@ -1,4 +1,6 @@
 const blogModel = require("../model/blog")
+const { logger } = require("../middleware/logger")
+const { status } = require("init")
 
 const createBlogs = async function(req, res) {
     try {
@@ -8,6 +10,7 @@ const createBlogs = async function(req, res) {
                 return res.status(401).send({ error: true, message: "you are not authorized to access this data" })
             }
             let blog = await blogModel.create(data)
+            logger.info(JSON.stringify(req.originalUrl), JSON.stringify(data))
             res.status(201).send({ error: false, message: "blog is created", data: blog })
         } else {
             res.status(201).send({ error: true, message: "enter some data in body to create blogs", data: blog })
@@ -15,6 +18,7 @@ const createBlogs = async function(req, res) {
 
     } catch (err) {
         console.log(err)
+        logger.error("err::" + JSON.stringify(err))
         res.status(500).send({ message: "server error", error: err })
     }
 }
