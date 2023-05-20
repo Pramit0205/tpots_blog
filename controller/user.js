@@ -7,7 +7,14 @@ const createUser = async function(req, res) {
     try {
         const { name, email, password } = req.body
         let data = req.body
-        if (!emailRegx.test(email)) {
+
+        function isEmail(email) {
+            var emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            if (email !== '' && email.match(emailFormat)) { return true; }
+
+            return false;
+        }
+        if (!isEmail(email)) {
             return res.status(400).send({ error: true, message: "enter a valid email", data: null })
         }
         if (name && email && password) {
