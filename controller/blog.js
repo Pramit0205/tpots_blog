@@ -4,6 +4,9 @@ const createBlogs = async function(req, res) {
     try {
         const data = req.body
         if (data) {
+            if (data.userId.toString() !== req.decodedToken.id) {
+                return res.status(401).send({ error: true, message: "you are not authorized to access this data" })
+            }
             let blog = await blogModel.create(data)
             res.status(201).send({ error: false, message: "blog is created", data: blog })
         } else {
